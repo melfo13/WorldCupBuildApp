@@ -9,5 +9,13 @@ pipeline {
                 sh 'mvn -v'
             }
         }
+        stage ('Clone sources') {
+            git url: 'https://github.com/melfo13/worldcupApp.git'
+        }
+        stage ('Maven Build') {
+            steps {
+                sh 'mvn -U clean install'
+            }
+        }
     }
 }
