@@ -11,7 +11,8 @@ pipeline {
         }
         stage ('Clone sources') {
             steps {
-                git url: 'https://github.com/melfo13/worldcupApp.git'
+                git credentialsId: '1669edf4-c89d-4db3-bf06-01bbfb524596', 
+                    url: 'https://github.com/melfo13/worldcupApp.git'
             }
         }
         stage ('Maven Build') {
