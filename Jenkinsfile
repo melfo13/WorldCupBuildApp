@@ -22,6 +22,10 @@ pipeline {
                     branch: 'main',
                     url: 'https://github.com/melfo13/worldcupApp.git'
                 sh 'docker build -t imagebyjenkins .'
+                docker.withRegistry("", "d025a1cc-0441-411e-8823-d4092171c739") {
+                    def image = docker.image("${worldcupapp}");
+                    image.push()
+                }
             }
         }
     }
