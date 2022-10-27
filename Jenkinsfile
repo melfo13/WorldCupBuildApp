@@ -23,7 +23,7 @@ pipeline {
                     url: 'https://github.com/melfo13/worldcupApp.git'
                 sh 'docker build -t melfo2310/imagebyjenkins:latest .'
                 withRegistry("", "d025a1cc-0441-411e-8823-d4092171c739") {
-                    sh 'docker push melfo2310/imagebyjenkins:latest
+                    sh 'docker push melfo2310/imagebyjenkins:latest'
                 }
             }
         }
