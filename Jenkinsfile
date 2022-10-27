@@ -10,7 +10,9 @@ pipeline {
             }
         }
         stage ('Clone sources') {
-            git url: 'https://github.com/melfo13/worldcupApp.git'
+            steps {
+                git url: 'https://github.com/melfo13/worldcupApp.git'
+            }
         }
         stage ('Maven Build') {
             steps {
