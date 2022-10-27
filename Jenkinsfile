@@ -18,5 +18,10 @@ pipeline {
                 sh 'mvn -U clean install'
             }
         }
+        stage ('docker publish') {
+            steps {
+                sh 'docker ps'
+            }
+        }
     }
 }
