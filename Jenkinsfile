@@ -35,13 +35,13 @@ pipeline {
                 }
             }
         }
-    }
-    stage ('deploy into ECS') {
-        agent {
-                docker { image 'amazon/aws-cli:latest' }
-        }
-        steps{
-            sh 'aws --version'
+        stage ('deploy into ECS') {
+            agent {
+                    docker { image 'amazon/aws-cli:latest' }
+            }
+            steps{
+                sh 'aws --version'
+            }
         }
     }
 }
