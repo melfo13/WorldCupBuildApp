@@ -43,6 +43,7 @@ pipeline {
                 script{
                     withAWS(credentials: 'my.aws.credentials', region: 'us-east-1') {
                         sh 'aws sts get-caller-identity --query "Account" --output text'
+                        sh 'aws --version'
                     }
 //                     withCredentials([ string(credentialsId: "my.aws.credentials",
 //                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
