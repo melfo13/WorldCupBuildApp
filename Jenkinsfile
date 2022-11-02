@@ -37,10 +37,19 @@ pipeline {
         }
         stage ('deploy into ECS') {
             agent {
-                    docker { image 'amazon/aws-cli:latest' }
+                docker { image 'amazon/aws-cli:latest' }
             }
             steps{
-                sh 'aws --version'
+                script{
+                    withCredentials([
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: "my.aws.credentials",
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ]){
+                        sh 'aws ecs list-task-definitions'
+                    }
+                }
             }
         }
     }
