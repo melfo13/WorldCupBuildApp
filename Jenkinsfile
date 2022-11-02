@@ -1,7 +1,7 @@
 pipeline {
     agent none
     stages {
-        stage ('Clone sources') {
+        stage ('Clone sources & build') {
             agent {
                 docker { image 'maven:3.8.3-openjdk-17' }
             }
@@ -34,6 +34,14 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    stage ('deploy into ECS') {
+        agent {
+                docker { image 'amazon/aws-cli:latest' }
+        }
+        steps{
+            sh 'aws --version'
         }
     }
 }
