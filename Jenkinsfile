@@ -29,7 +29,7 @@ pipeline {
                 sh 'docker push melfo2310/imagebyjenkins:latest'
                 script {
                     docker.withRegistry('https://541973109241.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:my.aws.credentials') {
-                        def customImage = docker.build("imagebyjenkins:latest")
+                        def customImage = docker.build("imagebyjenkins:1.0.3")
                         customImage.push()
                     }
                 }
