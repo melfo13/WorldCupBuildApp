@@ -37,21 +37,21 @@ pipeline {
         }
         stage ('deploy into ECS') {
             agent {
-                docker { image 'amazon/aws-cli:latest' }
+                docker { image 'melfo2310/awscli3:latest' }
+            }
+            environment {
+                AWS_REGION='us-east-1'
+                AWS_DEFAULT_REGION='us-east-1'
             }
             steps{
-                script{
-                    withAWS(credentials: 'my.aws.credentials', region: 'us-east-1') {
-                        sh 'aws sts get-caller-identity --query "Account" --output text'
-                        sh 'aws --version'
+                script {
+                    sh "export AWS_REGION='us-east-1'"
+                    withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId:'my.aws.credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' )]){
+                        sh 'aws ecs list-task-definitions'
+                        sh 'aws ecs run-task --task-definition arn:aws:ecs:us-east-1:541973109241:task-definition/worldCupApp:1 --cluster arn:aws:ecs:us-east-1:541973109241:cluster/worldCup-cluster'
                     }
-//                     withCredentials([ string(credentialsId: "my.aws.credentials",
-//                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-//                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-//                     ]){
-//                         sh 'aws ecs list-task-definitions'
-//                     }
                 }
+               sh 'aws --version'
             }
         }
     }
