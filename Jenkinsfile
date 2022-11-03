@@ -24,12 +24,12 @@ pipeline {
                 git credentialsId: '1669edf4-c89d-4db3-bf06-01bbfb524596', 
                     branch: 'main',
                     url: 'https://github.com/melfo13/worldcupApp.git'
-                sh 'docker build -t melfo2310/imagebyjenkins:1.0.3 .'
+                sh 'docker build -t melfo2310/imagebyjenkins:1.0.4 .'
                 sh 'docker login -u $dockerhub_USR -p $dockerhub_PSW'
                 sh 'docker push melfo2310/imagebyjenkins:latest'
                 script {
                     docker.withRegistry('https://541973109241.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:my.aws.credentials') {
-                        def customImage = docker.build("imagebyjenkins:1.0.3")
+                        def customImage = docker.build("imagebyjenkins:1.0.4")
                         customImage.push()
                     }
                 }
