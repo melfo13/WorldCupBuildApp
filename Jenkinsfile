@@ -48,7 +48,7 @@ pipeline {
                     sh "export AWS_REGION='us-east-1'"
                     withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId:'my.aws.credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' )]){
                         sh 'aws ecs list-task-definitions'
-                        sh 'aws ecs run-task --task-definition arn:aws:ecs:us-east-1:541973109241:task-definition/worldCupApp:1 --cluster arn:aws:ecs:us-east-1:541973109241:cluster/worldCup-cluster'
+//                         sh 'aws ecs run-task --task-definition arn:aws:ecs:us-east-1:541973109241:task-definition/worldCupApp:1 --cluster arn:aws:ecs:us-east-1:541973109241:cluster/worldCup-cluster'
                     }
                 }
                sh 'aws --version'
