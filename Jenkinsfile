@@ -48,7 +48,7 @@ pipeline {
                     sh "export AWS_REGION='us-east-1'"
                     withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId:'my.aws.credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' )]){
                         sh 'aws ecs list-task-definitions'
-                        sh 'sed -i "s/VERSION/1.0.3/g" taskdefinition.json'
+                        sh 'sed -i "s/VERSION/1.0.5/g" taskdefinition.json'
                         sh 'aws ecs register-task-definition --family worldCupApp --cli-input-json file://taskdefinition.json'
                         sh 'aws ecs update-service --service worldCupApp-service --cluster worldCupApp --task-definition worldCupApp'
 //                         sh 'aws ecs run-task --task-definition arn:aws:ecs:us-east-1:541973109241:task-definition/worldCupApp:1 --cluster arn:aws:ecs:us-east-1:541973109241:cluster/worldCup-cluster'
