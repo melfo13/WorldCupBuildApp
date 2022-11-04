@@ -12,6 +12,7 @@ pipeline {
                 sh 'java -version'
                 sh 'mvn -v'
                 sh 'pwd'
+                stash includes: '**./taskdefinition.json', name 'taskdef'
                 sh 'mvn -U clean install'
             }
         }
@@ -27,6 +28,8 @@ pipeline {
                 sh 'docker build -t melfo2310/imagebyjenkins:1.0.5 .'
                 sh 'docker login -u $dockerhub_USR -p $dockerhub_PSW'
                 sh 'docker push melfo2310/imagebyjenkins:latest'
+                unstash 'taskdef'
+                sh 'cat taskdefinition.json'
                 script {
                     docker.withRegistry('https://541973109241.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:my.aws.credentials') {
                         def customImage = docker.build("imagebyjenkins:1.0.5")
