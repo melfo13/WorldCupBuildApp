@@ -25,14 +25,14 @@ pipeline {
                 git credentialsId: '1669edf4-c89d-4db3-bf06-01bbfb524596', 
                     branch: 'main',
                     url: 'https://github.com/melfo13/worldcupApp.git'
-                sh 'docker build -t melfo2310/imagebyjenkins:1.0.5 .'
-                sh 'docker login -u $dockerhub_USR -p $dockerhub_PSW'
-                sh 'docker push melfo2310/imagebyjenkins:latest'
+//                 sh 'docker build -t melfo2310/imagebyjenkins:1.0.6 .'
+//                 sh 'docker login -u $dockerhub_USR -p $dockerhub_PSW'
+//                 sh 'docker push melfo2310/imagebyjenkins:latest'
                 unstash 'taskdef'
                 sh 'cat taskdefinition.json'
                 script {
                     docker.withRegistry('https://541973109241.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:my.aws.credentials') {
-                        def customImage = docker.build("imagebyjenkins:1.0.5")
+                        def customImage = docker.build("imagebyjenkins:1.0.6")
                         customImage.push()
                     }
                 }
@@ -53,17 +53,8 @@ pipeline {
                     withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId:'my.aws.credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' )]){
                         sh 'aws ecs list-task-definitions'
                         sh 'sed -i "s/VERSION/1.0.5/g" taskdefinition.json'
-                        sh 'aws ecs register-task-definition --family worldCupApp --cli-input-json file://taskdefinition.json >> tdreturn.txt'
-                        sh 'cat tdreturn.txt'
-//                         sh 'grep -hnr "revision" tdreturn.txt >> out.txt'
-//                         sh 'grep -Eo '[0-9]{2}' out.txt | tail -1 >> version.txt'
-                        script {
-                            def lines = new File('tmp/tdreturn.txt').readLines()
-                            def result = lines.findAll { it.contains('revision') }
-                            def version = readFile "version.txt"
-                            env.versions = version
-                        }
-                        sh '''aws ecs update-service --service worldCupApp-service --cluster worldCupApp --task-definition worldCupApp:${version}'''
+                        sh 'aws ecs register-task-definition --family worldCupApp --cli-input-json file://taskdefinition.json'
+                        sh 'aws ecs update-service --service worldCupApp-service --cluster worldCupApp --task-definition worldCupApp:19'
 //                         sh 'aws ecs run-task --task-definition arn:aws:ecs:us-east-1:541973109241:task-definition/worldCupApp:1 --cluster arn:aws:ecs:us-east-1:541973109241:cluster/worldCup-cluster'
                     }
                 }
