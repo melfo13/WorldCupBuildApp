@@ -49,6 +49,7 @@ pipeline {
             steps{
                 script {
                     sh "export AWS_REGION='us-east-1'"
+                    unstash 'taskdef'
                     withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId:'my.aws.credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' )]){
                         sh 'aws ecs list-task-definitions'
                         sh 'sed -i "s/VERSION/1.0.5/g" taskdefinition.json'
