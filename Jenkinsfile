@@ -55,8 +55,12 @@ pipeline {
                         sh 'sed -i "s/VERSION/1.0.5/g" taskdefinition.json'
                         sh 'aws ecs register-task-definition --family worldCupApp --cli-input-json file://taskdefinition.json >> tdreturn.txt'
                         sh 'grep -hnr "revision" tdreturn.txt >> out.txt'
-                        sh 'version=$(  grep -Eo '[0-9]{2}' out.txt | tail -1) ' 
-                        sh 'aws ecs update-service --service worldCupApp-service --cluster worldCupApp --task-definition worldCupApp:$version'
+                        sh 'grep -Eo '[0-9]{2}' out.txt | tail -1 >> version.txt'
+                        script {
+                            def version = readFile "version.txt"
+                            env.versions = version
+                        }
+                        sh '''aws ecs update-service --service worldCupApp-service --cluster worldCupApp --task-definition worldCupApp:${version}'''
 //                         sh 'aws ecs run-task --task-definition arn:aws:ecs:us-east-1:541973109241:task-definition/worldCupApp:1 --cluster arn:aws:ecs:us-east-1:541973109241:cluster/worldCup-cluster'
                     }
                 }
