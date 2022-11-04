@@ -54,6 +54,7 @@ pipeline {
                         sh 'aws ecs list-task-definitions'
                         sh 'sed -i "s/VERSION/1.0.5/g" taskdefinition.json'
                         sh 'aws ecs register-task-definition --family worldCupApp --cli-input-json file://taskdefinition.json >> tdreturn.txt'
+                        sh 'cat tdreturn.txt'
 //                         sh 'grep -hnr "revision" tdreturn.txt >> out.txt'
 //                         sh 'grep -Eo '[0-9]{2}' out.txt | tail -1 >> version.txt'
                         script {
