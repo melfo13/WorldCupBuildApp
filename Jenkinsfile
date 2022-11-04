@@ -12,7 +12,7 @@ pipeline {
                 sh 'java -version'
                 sh 'mvn -v'
                 sh 'pwd'
-                stash includes: '**./taskdefinition.json', name 'taskdef'
+                stash includes: '**./taskdefinition.json', name: 'taskdef'
                 sh 'mvn -U clean install'
             }
         }
