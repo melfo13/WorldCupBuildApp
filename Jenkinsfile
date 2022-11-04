@@ -58,7 +58,7 @@ pipeline {
 //                         sh 'grep -hnr "revision" tdreturn.txt >> out.txt'
 //                         sh 'grep -Eo '[0-9]{2}' out.txt | tail -1 >> version.txt'
                         script {
-                            def lines = new File('tdreturn.txt').readLines()
+                            def lines = new File('tmp/tdreturn.txt').readLines()
                             def result = lines.findAll { it.contains('revision') }
                             def version = readFile "version.txt"
                             env.versions = version
