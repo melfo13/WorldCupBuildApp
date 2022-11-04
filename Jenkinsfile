@@ -32,7 +32,7 @@ pipeline {
                 sh 'cat taskdefinition.json'
                 script {
                     docker.withRegistry('https://541973109241.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:my.aws.credentials') {
-                        def customImage = docker.build("imagebyjenkins:1.0.6")
+                        def customImage = docker.build("imagebyjenkins:1.0.7")
                         customImage.push()
                     }
                 }
@@ -51,7 +51,7 @@ pipeline {
                     sh "export AWS_REGION='us-east-1'"
                     unstash 'taskdef'
                     withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId:'my.aws.credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' )]){
-                        sh 'sed -i "s/VERSION/1.0.5/g" taskdefinition.json'
+                        sh 'sed -i "s/VERSION/1.0.7/g" taskdefinition.json'
                         sh 'aws ecs register-task-definition --family worldCupApp --cli-input-json file://taskdefinition.json >> tdef.txt && grep -hnr "revision" tdef.txt >> out.txt && grep -Eo "[0-9]{2}" out.txt | tail -1 >> version.txt'
                         env.LS = sh(script:'tail -1 version.txt', returnStdout: true).trim()
                         sh 'rm -rf tdef.txt out.txt version.txt '
